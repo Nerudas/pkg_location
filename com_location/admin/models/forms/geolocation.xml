@@ -1,4 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
 <form>
+	<fieldset name="global">
+		<field name="region_id" type="region"
+			   label="COM_LOCATION_GEOLOCATION_ASSOCIATED_REGION"
+			   class="span12">
+		</field>
 
+		<field name="state" type="list"
+			   label="JSTATUS"
+			   description="JFIELD_PUBLISHED_DESC"
+			   class="chzn-color-state span12"
+			   filter="intval"
+			   default="1">
+			<option value="1">JPUBLISHED</option>
+			<option value="0">JUNPUBLISHED</option>
+			<option value="-2">JTRASHED</option>
+		</field>
+		<field name="id" type="text"
+			   label="JGLOBAL_FIELD_ID_LABEL"
+			   description="JGLOBAL_FIELD_ID_DESC"
+			   class="readonly span12"
+			   default="0"
+			   readonly="true"/>
+		<field name="country" type="text"
+			   label="COM_LOCATION_GEOLOCATION_COUNTRY"
+			   class="readonly span12"
+			   default="-"
+			   readonly="true"/>
+		<field name="district" type="text"
+			   label="COM_LOCATION_GEOLOCATION_DISTRICT"
+			   class="readonly span12"
+			   default="-"
+			   readonly="true"/>
+		<field name="region" type="text"
+			   label="COM_LOCATION_GEOLOCATION_REGION"
+			   class="readonly span12"
+			   default="-"
+			   readonly="true"/>
+		<field name="city" type="text"
+			   label="COM_LOCATION_GEOLOCATION_CITY"
+			   class="readonly span12"
+			   default="-"
+			   readonly="true"/>
+		<field name="latitude" type="hidden" readonly="true"/>
+		<field name="longitude" type="hidden" readonly="true"/>
+	</fieldset>
 </form>
