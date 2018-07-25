@@ -13,6 +13,7 @@ defined('_JEXEC') or die;
 use Joomla\CMS\MVC\Model\ListModel;
 use Joomla\CMS\Helper\TagsHelper;
 use Joomla\Utilities\ArrayHelper;
+use Joomla\CMS\Uri\Uri;
 
 class LocationModelRegions extends ListModel
 {
@@ -29,8 +30,8 @@ class LocationModelRegions extends ListModel
 		{
 			$config['filter_fields'] = array(
 				'id', 'r.id',
-				'title', 'r.title',
-				'short_title', 'r.short_title',
+				'name', 'r.name',
+				'abbreviation', 'r.abbreviation',
 				'parent_id', 'r.parent_id',
 				'lft', 'r.lft',
 				'rgt', 'r.rgt',
@@ -168,7 +169,7 @@ class LocationModelRegions extends ListModel
 			}
 			else
 			{
-				$cols = array('r.title', 'r.alias');
+				$cols = array('r.name', 'r.alias', 'r.abbreviation');
 				$sql  = array();
 				foreach ($cols as $col)
 				{

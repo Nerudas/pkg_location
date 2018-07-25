@@ -47,8 +47,12 @@
 }
 
 #system-message-container {
-	position: absolute !important;
-	z-index: 1 !important;
+	position: fixed !important;
+	top: 30px;
+	left: 0;
+	right: 0;
+	z-index: 777 !important;
 	width: 100% !important;
 	padding: 0 !important;
+	border-radius: 0 !important;
 }

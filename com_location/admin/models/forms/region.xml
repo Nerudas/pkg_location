@@ -1,4 +1,74 @@
 <?xml version="1.0" encoding="utf-8"?>
 <form>
+	<fieldset name="header">
+		<field name="name" type="text"
+			   label="JGLOBAL_TITLE"
+			   required="true"
+			   class="input-xxlarge input-large-text"/>
+		<field name="abbreviation" type="text"
+			   label="COM_LOCATION_REGION_ABBREVIATION"
+			   class="input-small"
+		/>
+		<field name="alias" type="text"
+			   label="JFIELD_ALIAS_LABEL"
+			   description="JFIELD_ALIAS_DESC"
+			   hint="JFIELD_ALIAS_PLACEHOLDER"
+			   size="40"/>
+		<field name="parent_id" type="locationregion"
+			   label="COM_LOCATION_REGION_PARENT"
+			   default="-1">
+			<option value="-1">JGLOBAL_ROOT_PARENT</option>
+		</field>
+	</fieldset>
+	<fieldset name="global">
+		<field name="icon" type="ajaximage"
+			   label="COM_LOCATION_REGION_ICON"
+			   filename="icon"
+			   class="span12"/>
+		<field name="tags" type="advtags"
+			   label="JTAG"
+			   description="JTAG_DESC"
+			   multiple="true"
+			   class="span12"
+			   layout="joomla.form.field.advtags.select"/>
 
+		<field name="id" type="text"
+			   label="JGLOBAL_FIELD_ID_LABEL"
+			   description="JGLOBAL_FIELD_ID_DESC"
+			   class="readonly span12"
+			   default="0"
+			   readonly="true"/>
+		<field name="state" type="list"
+			   label="JSTATUS"
+			   description="JFIELD_PUBLISHED_DESC"
+			   class="chzn-color-state span12"
+			   filter="intval"
+			   default="1">
+			<option value="1">JPUBLISHED</option>
+			<option value="0">JUNPUBLISHED</option>
+			<option value="-2">JTRASHED</option>
+		</field>
+		<field name="access" type="accesslevel"
+			   label="JFIELD_ACCESS_LABEL"
+			   description="JFIELD_ACCESS_DESC"
+			   size="1"
+			   class="span12"/>
+		<field name="imagefolder" type="imagefolder" path="images/prototype/categories" class="span12"/>
+
+		<field name="latitude" type="text"
+			   label="COM_LOCATION_REGION_LATITUDE"
+			   default="0"
+			   class="span12"/>
+		<field name="longitude" type="text"
+			   label="COM_LOCATION_REGION_LONGITUDE"
+			   default="0"
+			   class="span12"/>
+		<field name="zoom" type="text"
+			   label="COM_LOCATION_REGION_ZOOM"
+			   default="0"
+			   class="span12"/>
+
+		<field name="lft" type="hidden" filter="unset"/>
+		<field name="rgt" type="hidden" filter="unset"/>
+	</fieldset>
 </form>

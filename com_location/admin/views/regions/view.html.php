@@ -158,7 +158,7 @@ class LocationViewRegions extends HtmlView
 		return [
 			'r.state'      => Text::_('JSTATUS'),
 			'r.id'         => Text::_('JGRID_HEADING_ID'),
-			'r.title'      => Text::_('JGLOBAL_TITLE'),
+			'r.name'      => Text::_('COM_LOCATION_REGION_NAME'),
 			'access_level' => Text::_('JGRID_HEADING_ACCESS'),
 		];
 	}

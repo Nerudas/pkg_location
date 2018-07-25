@@ -42,7 +42,7 @@
 			   class="readonly span12"
 			   default="-"
 			   readonly="true"/>
-		<field name="latitude" type="hidden" readonly="true"/>
-		<field name="longitude" type="hidden" readonly="true"/>
+		<field name="latitude" type="hidden" readonly="true" default="0"/>
+		<field name="longitude" type="hidden" readonly="true" default="0"/>
 	</fieldset>
 </form>
