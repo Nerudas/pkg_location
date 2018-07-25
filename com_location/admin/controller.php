@@ -21,5 +21,5 @@ class LocationController extends BaseController
 	 *
 	 * @since  1.0.0
 	 */
-	protected $default_view = 'geolocations';
+	protected $default_view = 'regions';
 }
