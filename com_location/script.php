@@ -28,6 +28,8 @@ class com_locationInstallerScript
 		$this->fixTables($path);
 		$this->tagsIntegration();
 		$this->createImageFolders();
+		$this->createRootRegion();
+
 		return true;
 	}
 
@@ -56,14 +58,45 @@ class com_locationInstallerScript
 	}
 
 	/**
+	 * Create root region
+	 *
+	 * @since  1.0.0
+	 */
+	protected function createRootRegion()
+	{
+		$db = Factory::getDbo();
+		// Category
+		$query = $db->getQuery(true)
+			->select('id')
+			->from($db->quoteName('#__location_regions'))
+			->where($db->quoteName('id') . ' = ' . $db->quote(1));
+		$db->setQuery($query);
+		$current_id = $db->loadResult();
+
+		$root            = new stdClass();
+		$root->id        = -1;
+		$root->parent_id = 0;
+		$root->lft       = 0;
+		$root->rgt       = 1;
+		$root->level     = 0;
+		$root->path      = '';
+		$root->alias     = 'root';
+		$root->access    = 1;
+		$root->state     = 1;
+
+		(!empty($current_id)) ? $db->updateObject('#__location_regions', $root, array('id'))
+			: $db->insertObject('#__location_regions', $root);
+	}
+
+
+	/**
 	 * Create or update tags integration
 	 *
 	 * @since  1.0.0
 	 */
 	protected function tagsIntegration()
 	{
-		// Item
-		$db = Factory::getDbo();
+		$db    = Factory::getDbo();
 		$query = $db->getQuery(true)
 			->select('type_id')
 			->from($db->quoteName('#__content_types'))

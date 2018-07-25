@@ -14,3 +14,28 @@ CREATE TABLE IF NOT EXISTS `#__location_geolocations` (
 	ENGINE = MyISAM
 	DEFAULT CHARSET = utf8
 	AUTO_INCREMENT = 0;
+
+CREATE TABLE IF NOT EXISTS `#__location_regions` (
+	`id`          INT(11)      NOT NULL AUTO_INCREMENT,
+	`title`       VARCHAR(255) NOT NULL DEFAULT '',
+	`short_title` VARCHAR(255) NOT NULL DEFAULT '',
+	`parent_id`   INT(11)      NOT NULL DEFAULT '0',
+	`lft`         INT(11)      NOT NULL DEFAULT '0',
+	`rgt`         INT(11)      NOT NULL DEFAULT '0',
+	`level`       INT(10)      NOT NULL DEFAULT '0',
+	`path`        VARCHAR(400) NOT NULL DEFAULT '',
+	`alias`       VARCHAR(400) NOT NULL DEFAULT '',
+	`icon`        TEXT         NOT NULL DEFAULT '',
+	`default`     TINYINT(3)   NOT NULL DEFAULT '0',
+	`show_all`    TINYINT(3)   NOT NULL DEFAULT '0',
+	`state`       TINYINT(3)   NOT NULL DEFAULT '0',
+	`access`      INT(10)      NOT NULL DEFAULT '0',
+	`latitude`    DOUBLE(20, 6),
+	`longitude`   DOUBLE(20, 6),
+	`zoom`        INT(11)      NOT NULL DEFAULT '0',
+	`items_tags`  MEDIUMTEXT   NOT NULL DEFAULT '',
+	UNIQUE KEY `id` (`id`)
+)
+	ENGINE = MyISAM
+	DEFAULT CHARSET = utf8
+	AUTO_INCREMENT = 0;
