@@ -24,6 +24,9 @@
 				controls: ['zoomControl', 'fullscreenControl', 'searchControl', 'geolocationControl']
 			});
 
+			var searchControl = map.controls.get('searchControl');
+			searchControl.options.set('noPlacemark', true);
+
 			// On change map bounds
 			map.events.add('boundschange', function (event) {
 				//  Change zoom

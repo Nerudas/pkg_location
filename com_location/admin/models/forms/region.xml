@@ -7,8 +7,7 @@
 			   class="input-xxlarge input-large-text"/>
 		<field name="abbreviation" type="text"
 			   label="COM_LOCATION_REGION_ABBREVIATION"
-			   class="input-small"
-		/>
+			   class="input-small"/>
 		<field name="alias" type="text"
 			   label="JFIELD_ALIAS_LABEL"
 			   description="JFIELD_ALIAS_DESC"
@@ -25,19 +24,6 @@
 			   label="COM_LOCATION_REGION_ICON"
 			   filename="icon"
 			   class="span12"/>
-		<field name="tags" type="advtags"
-			   label="JTAG"
-			   description="JTAG_DESC"
-			   multiple="true"
-			   class="span12"
-			   layout="joomla.form.field.advtags.select"/>
-
-		<field name="id" type="text"
-			   label="JGLOBAL_FIELD_ID_LABEL"
-			   description="JGLOBAL_FIELD_ID_DESC"
-			   class="readonly span12"
-			   default="0"
-			   readonly="true"/>
 		<field name="state" type="list"
 			   label="JSTATUS"
 			   description="JFIELD_PUBLISHED_DESC"
@@ -53,8 +39,12 @@
 			   description="JFIELD_ACCESS_DESC"
 			   size="1"
 			   class="span12"/>
-		<field name="imagefolder" type="imagefolder" path="images/prototype/categories" class="span12"/>
-
+		<field name="tags" type="advtags"
+			   label="JTAG"
+			   description="JTAG_DESC"
+			   multiple="true"
+			   class="span12"
+			   layout="joomla.form.field.advtags.select"/>
 		<field name="latitude" type="text"
 			   label="COM_LOCATION_REGION_LATITUDE"
 			   default="0"
@@ -67,7 +57,13 @@
 			   label="COM_LOCATION_REGION_ZOOM"
 			   default="0"
 			   class="span12"/>
-
+		<field name="id" type="text"
+			   label="JGLOBAL_FIELD_ID_LABEL"
+			   description="JGLOBAL_FIELD_ID_DESC"
+			   class="readonly span12"
+			   default="0"
+			   readonly="true"/>
+		<field name="imagefolder" type="imagefolder" path="images/location/regions" class="span12"/>
 		<field name="lft" type="hidden" filter="unset"/>
 		<field name="rgt" type="hidden" filter="unset"/>
 	</fieldset>
