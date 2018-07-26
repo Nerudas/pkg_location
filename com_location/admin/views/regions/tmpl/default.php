@@ -29,7 +29,7 @@ $userId    = $user->get('id');
 $listOrder = $this->escape($this->state->get('list.ordering'));
 $listDirn  = $this->escape($this->state->get('list.direction'));
 
-$saveOrder = ($listOrder == 'c.lft' && strtolower($listDirn) == 'asc');
+$saveOrder = ($listOrder == 'r.lft' && strtolower($listDirn) == 'asc');
 if ($saveOrder)
 {
 	$saveOrderingUrl = 'index.php?option=com_location&task=regions.saveOrderAjax&tmpl=component';

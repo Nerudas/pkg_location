@@ -380,4 +380,29 @@ class LocationModelRegion extends AdminModel
 
 		return false;
 	}
+
+	/**
+	 * Method rebuild the entire nested set tree.
+	 *
+	 * @return  boolean  False on failure or error, true otherwise.
+	 *
+	 * @since   1.0.0
+	 */
+	public function rebuild()
+	{
+		// Get an instance of the table object.
+		$table = $this->getTable();
+
+		if (!$table->rebuild())
+		{
+			$this->setError($table->getError());
+
+			return false;
+		}
+
+		// Clear the cache
+		$this->cleanCache();
+
+		return true;
+	}
 }
