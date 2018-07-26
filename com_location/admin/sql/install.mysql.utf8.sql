@@ -1,7 +1,7 @@
 CREATE TABLE IF NOT EXISTS `#__location_regions` (
 	`id`           INT(11)      NOT NULL AUTO_INCREMENT,
 	`name`         VARCHAR(255) NOT NULL DEFAULT '',
-	`parent_id`    INT(11)      NOT NULL DEFAULT '0',
+	`parent_id`    INT(11)      NOT NULL DEFAULT '-1',
 	`lft`          INT(11)      NOT NULL DEFAULT '0',
 	`rgt`          INT(11)      NOT NULL DEFAULT '0',
 	`level`        INT(10)      NOT NULL DEFAULT '0',
