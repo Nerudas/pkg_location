@@ -66,6 +66,9 @@ $columns = 9;
 					<th class="nowrap">
 						<?php echo HTMLHelper::_('searchtools.sort', 'COM_LOCATION_GEOLOCATION_CITY', 'g.city', $listDirn, $listOrder); ?>
 					</th>
+					<th class="nowrap">
+						<?php echo HTMLHelper::_('searchtools.sort', 'COM_LOCATION_GEOLOCATION_ASSOCIATED_REGION', 'g.region_id', $listDirn, $listOrder); ?>
+					</th>
 					<th width="10%" class="nowrap hidden-phone">
 						<?php echo HTMLHelper::_('searchtools.sort', 'JGLOBAL_CREATED_DATE', 'g.created', $listDirn, $listOrder); ?>
 					</th>
@@ -119,7 +122,15 @@ $columns = 9;
 						<td>
 							<?php echo $this->escape($item->city); ?>
 						</td>
-
+						<td>
+							<?php if ($item->associated_region): ?>
+								<a href="<?php echo Route::_('index.php?option=com_location&task=region.edit&id=' . $item->region_id); ?>">
+									<?php echo $this->escape($item->associated_region); ?>
+								</a>
+							<?php else: ?>
+								<?php echo Text::_('COM_LOCATION_GEOLOCATION_ASSOCIATED_REGION_UNDEFINED'); ?>
+							<?php endif; ?>
+						</td>
 						<td class="nowrap small hidden-phone">
 							<?php echo $item->created > 0 ? HTMLHelper::_('date', $item->created,
 								Text::_('DATE_FORMAT_LC2')) : '-' ?>

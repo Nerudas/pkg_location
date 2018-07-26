@@ -74,6 +74,8 @@ class LocationModelGeolocations extends ListModel
 		$city = $this->getUserStateFromRequest($this->context . '.filter.city', 'filter_city');
 		$this->setState('filter.city', $city);
 
+		$region_id = $this->getUserStateFromRequest($this->context . '.filter.region_id', 'filter_region_id');
+		$this->setState('filter.region_id', $region_id);
 
 		// List state information.
 		$ordering  = empty($ordering) ? 'g.created' : $ordering;
@@ -102,6 +104,7 @@ class LocationModelGeolocations extends ListModel
 		$id .= ':' . $this->getState('filter.district');
 		$id .= ':' . $this->getState('filter.region');
 		$id .= ':' . $this->getState('filter.city');
+		$id .= ':' . $this->getState('filter.region_id');
 
 		return parent::getStoreId($id);
 	}
@@ -136,28 +139,40 @@ class LocationModelGeolocations extends ListModel
 		$country = $this->getState('filter.country');
 		if (!empty($country))
 		{
-			$query->where($db->quoteName('g.country') .' = ' . $db->quote($country));
+			$query->where($db->quoteName('g.country') . ' = ' . $db->quote($country));
 		}
+
+		// Join over the asset groups.
+		$query->select('r.name AS associated_region')
+			->join('LEFT', '#__location_regions AS r ON r.id = g.region_id');
+
 
 		// Filter by district
 		$district = $this->getState('filter.district');
 		if (!empty($district))
 		{
-			$query->where($db->quoteName('g.district') .' = ' . $db->quote($district));
+			$query->where($db->quoteName('g.district') . ' = ' . $db->quote($district));
 		}
 
 		// Filter by region
 		$region = $this->getState('filter.region');
 		if (!empty($region))
 		{
-			$query->where($db->quoteName('g.region') .' = ' . $db->quote($region));
+			$query->where($db->quoteName('g.region') . ' = ' . $db->quote($region));
 		}
 
 		// Filter by city
 		$city = $this->getState('filter.city');
 		if (!empty($city))
 		{
-			$query->where($db->quoteName('g.city') .' = ' . $db->quote($city));
+			$query->where($db->quoteName('g.city') . ' = ' . $db->quote($city));
+		}
+
+		// Filter by region_id state
+		$region_id = $this->getState('filter.region_id');
+		if (is_numeric($region_id))
+		{
+			$query->where('g.region_id = ' . (int) $region_id);
 		}
 
 		// Filter by search.

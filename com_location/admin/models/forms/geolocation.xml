@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <form>
 	<fieldset name="global">
-		<field name="region_id" type="region"
+		<field name="region_id" type="locationregion"
 			   label="COM_LOCATION_GEOLOCATION_ASSOCIATED_REGION"
 			   class="span12">
+			<option value="-1">COM_LOCATION_GEOLOCATION_ASSOCIATED_REGION_UNDEFINED</option>
 		</field>
 
 		<field name="state" type="list"
