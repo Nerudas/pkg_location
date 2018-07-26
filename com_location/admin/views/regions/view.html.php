@@ -116,7 +116,7 @@ class LocationViewRegions extends HtmlView
 		$user  = Factory::getUser();
 		$canDo = LocationHelper::getActions('com_location', 'regions');
 
-		JToolBarHelper::title(Text::_('COM_LOCATION') . ': ' . Text::_('COM_LOCATION_REGIONS'), 'clock');
+		JToolBarHelper::title(Text::_('COM_LOCATION') . ': ' . Text::_('COM_LOCATION_REGIONS'), 'location');
 
 		if ($canDo->get('core.create') || count($user->getAuthorisedCategories('com_location', 'core.create')) > 0)
 		{
