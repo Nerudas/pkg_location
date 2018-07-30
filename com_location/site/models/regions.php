@@ -347,15 +347,15 @@ class LocationModelRegions extends ListModel
 				}
 
 				$db->setQuery($query);
-				$region_id = $db->loadResult();
+				$id = $db->loadResult();
 
-				if (!empty($region_id))
+				if (!empty($id))
 				{
-					$this->_profileRegions[$pk] = $this->getRegion($region_id);
+					$this->_profileRegions[$pk] = $this->getRegion($id);
 				}
 				else
 				{
-					$this->_profileRegions[$pk] = $this->getGeoLocationRegion();
+					$this->_profileRegions[$pk] = $this->getDefaultRegion();
 				}
 
 			}
