@@ -16,6 +16,7 @@
 	</languages>
 	<files>
 		<folder type="component" id="com_location">com_location</folder>
+		<folder type="plugin" id="location_geolocation" group="system">plg_system_location_geolocation</folder>
 	</files>
 	<updateservers>
 		<server type="extension" priority="1" name="Location Package">

@@ -69,7 +69,7 @@ class com_locationInstallerScript
 		$query = $db->getQuery(true)
 			->select('id')
 			->from($db->quoteName('#__location_regions'))
-			->where($db->quoteName('id') . ' = ' . $db->quote(0));
+			->where($db->quoteName('id') . ' = ' . $db->quote(-1));
 		$db->setQuery($query);
 		$current_id = $db->loadResult();
 

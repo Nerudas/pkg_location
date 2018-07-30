@@ -13,3 +13,6 @@ Thank you for your understanding.
 ## Package Contents
 * **Location Component**  
 Component for organizing regionality on the site
+
+* **System - Location Geolocation Plugin**  
+Plugin for determining the visitor's region
