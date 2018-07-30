@@ -33,6 +33,10 @@
 			<option value="r.id DESC">JGRID_HEADING_ID_DESC</option>
 			<option value="r.state ASC">JSTATUS_ASC</option>
 			<option value="r.state DESC">JSTATUS_DESC</option>
+			<option value="r.default ASC">COM_LOCATION_REGION_DEFAULT_ASC</option>
+			<option value="r.default DESC">COM_LOCATION_REGION_DEFAULT_DESC</option>
+			<option value="r.show_all ASC">COM_LOCATION_REGION_SHOW_ALL_ASC</option>
+			<option value="r.show_all DESC">COM_LOCATION_REGION_SHOW_ALL_DESC</option>
 		</field>
 		<field name="limit" type="limitbox"
 			   class="inputbox input-mini"

@@ -74,6 +74,11 @@ class LocationViewRegion extends HtmlView
 		}
 		$this->addToolbar();
 
+
+		if ($this->item->default) {
+			$this->form->setFieldAttribute('default', 'disabled', 'true');
+		}
+
 		return parent::display($tpl);
 	}
 

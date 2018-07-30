@@ -174,6 +174,7 @@ class LocationModelRegion extends AdminModel
 		$isNew      = true;
 		$context    = $this->option . '.' . $this->name;
 		$dispatcher = JEventDispatcher::getInstance();
+		$setDefault = (!empty($data['default']));
 
 		if (!empty($data['tags']) && $data['tags'][0] != '')
 		{
@@ -189,6 +190,12 @@ class LocationModelRegion extends AdminModel
 		{
 			$table->load($pk);
 			$isNew = false;
+
+			if ($table->default)
+			{
+				$setDefault      = false;
+				$data['default'] = 1;
+			}
 		}
 		// Set the new parent id if parent id not matched OR while New .
 		if ($table->parent_id != $data['parent_id'] || $data['id'] == 0)
@@ -287,6 +294,12 @@ class LocationModelRegion extends AdminModel
 
 		$id = $table->id;
 
+		// If default
+		if ($setDefault)
+		{
+			$this->setDefault($id);
+		}
+
 		// Save images
 		$data['imagefolder'] = (!empty($data['imagefolder'])) ? $data['imagefolder'] :
 			$this->imageFolderHelper->getItemImageFolder($id);
@@ -367,6 +380,22 @@ class LocationModelRegion extends AdminModel
 	 */
 	public function delete(&$pks)
 	{
+		$db    = Factory::getDbo();
+		$query = $db->getQuery(true)
+			->select('id')
+			->from('#__location_regions')
+			->where($db->quoteName('default') . ' = 1');
+		$db->setQuery($query);
+		$default = $db->loadResult();
+
+		foreach ($pks as $i => $pk)
+		{
+			if ($pk == $default)
+			{
+				unset($pks[$i]);
+			}
+		}
+
 		if (parent::delete($pks))
 		{
 			// Delete images
@@ -402,6 +431,163 @@ class LocationModelRegion extends AdminModel
 
 		// Clear the cache
 		$this->cleanCache();
+
+		return true;
+	}
+
+	/**
+	 * Method to change the published state of one or more records.
+	 *
+	 * @param   array   &$pks  A list of the primary keys to change.
+	 * @param   integer $value The value of the published state.
+	 *
+	 * @return  boolean  True on success.
+	 *
+	 * @since   1.0.0
+	 */
+	public function publish(&$pks, $value = 1)
+	{
+		if ($value != 1)
+		{
+			$db    = Factory::getDbo();
+			$query = $db->getQuery(true)
+				->select('id')
+				->from('#__location_regions')
+				->where($db->quoteName('default') . ' = 1');
+			$db->setQuery($query);
+			$default = $db->loadResult();
+
+			foreach ($pks as $i => $pk)
+			{
+				if ($pk == $default)
+				{
+					unset($pks[$i]);
+				}
+			}
+		}
+
+		return parent::publish($pks, $value);
+	}
+
+	/**
+	 * Method to set a template style as home.
+	 *
+	 * @param   integer $id The primary key ID for the style.
+	 *
+	 * @return  boolean  True if successful.
+	 *
+	 * @throws    Exception
+	 *
+	 * @since 1.0.0
+	 */
+	public function setDefault($id = 0)
+	{
+		$user = Factory::getUser();
+		$db   = $this->getDbo();
+
+		// Access checks.
+		if (!$user->authorise('core.edit.state', 'com_location'))
+		{
+			throw new Exception(Text::_('JLIB_APPLICATION_ERROR_EDITSTATE_NOT_PERMITTED'));
+		}
+
+		$region = $this->getTable();
+
+		if (!$region->load((int) $id))
+		{
+			throw new Exception(Text::_('COM_LOCATION_ERROR_REGION_NOT_FOUND'));
+		}
+
+		// Reset the default
+		$query = $db->getQuery(true)
+			->update('#__location_regions')
+			->set($db->quoteName('default') . ' = 0');
+		$db->setQuery($query)->execute();
+
+		// Set the new default.
+		$query = $db->getQuery(true)
+			->update('#__location_regions')
+			->set($db->quoteName('default') . ' = 1')
+			->set($db->quoteName('state') . ' = 1')
+			->where('id = ' . (int) $id);
+		$db->setQuery($query)->execute();
+
+		// Clean the cache.
+		$this->cleanCache();
+
+		return true;
+	}
+
+	/**
+	 * Method to set show_all to one or more records.
+	 *
+	 * @param   array &$pks An array of record primary keys.
+	 *
+	 * @return true
+	 *
+	 * @since 1.0.0
+	 */
+	public function setShowAll($pks = array())
+	{
+		$user = Factory::getUser();
+
+		// Access checks.
+		if (!$user->authorise('core.edit.state', 'com_location'))
+		{
+			throw new Exception(Text::_('JLIB_APPLICATION_ERROR_EDITSTATE_NOT_PERMITTED'));
+		}
+		try
+		{
+			$db    = $this->getDbo();
+			$query = $db->getQuery(true)
+				->update('#__location_regions')
+				->set($db->quoteName('show_all') . ' = 1')
+				->where($db->quoteName('id') . ' IN (' . implode(',', $pks) . ')');
+			$db->setQuery($query)->execute();
+		}
+		catch (Exception $e)
+		{
+			$this->setError($e);
+
+			return false;
+		}
+
+		return true;
+	}
+
+	/**
+	 * Method to unset show_all to one or more records.
+	 *
+	 * @param   array &$pks An array of record primary keys.
+	 *
+	 * @return true
+	 *
+	 * @since 1.0.0
+	 */
+	public function unsetShowAll($pks = array())
+	{
+		$user = Factory::getUser();
+
+		// Access checks.
+		if (!$user->authorise('core.edit.state', 'com_location'))
+		{
+			throw new Exception(Text::_('JLIB_APPLICATION_ERROR_EDITSTATE_NOT_PERMITTED'));
+		}
+		try
+		{
+			$db    = $this->getDbo();
+			$query = $db->getQuery(true)
+				->update('#__location_regions')
+				->set($db->quoteName('show_all') . ' = 0')
+				->where($db->quoteName('id') . ' IN (' . implode(',', $pks) . ')');
+			$db->setQuery($query)->execute();
+		}
+		catch (Exception $e)
+		{
+			$this->setError($e);
+
+			return false;
+		}
 
 		return true;
 	}

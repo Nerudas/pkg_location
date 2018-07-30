@@ -138,6 +138,18 @@ class LocationViewRegions extends HtmlView
 		elseif ($canDo->get('core.edit.state'))
 		{
 			JToolbarHelper::trash('regions.trash');
+
+		}
+
+		if ($canDo->get('core.edit.state'))
+		{
+			JToolbarHelper::makeDefault('regions.setDefault');
+			JToolbarHelper::divider();
+			JToolbarHelper::custom('regions.setShowAll', 'eye', 'setShowALL',
+				'COM_LOCATION_REGION_SET_SHOW_ALL', true);
+			JToolbarHelper::custom('regions.unsetShowAll', 'eye-2', 'unsetShowAll',
+				'COM_LOCATION_REGION_UNSET_SHOW_ALL', true);
+			JToolbarHelper::divider();
 		}
 
 		if ($user->authorise('core.admin', 'com_location') || $user->authorise('core.options', 'com_location'))
@@ -158,8 +170,10 @@ class LocationViewRegions extends HtmlView
 		return [
 			'r.state'      => Text::_('JSTATUS'),
 			'r.id'         => Text::_('JGRID_HEADING_ID'),
-			'r.name'      => Text::_('COM_LOCATION_REGION_NAME'),
+			'r.name'       => Text::_('COM_LOCATION_REGION_NAME'),
 			'access_level' => Text::_('JGRID_HEADING_ACCESS'),
+			'r.default'    => Text::_('COM_LOCATION_REGION_DEFAULT'),
+			'r.show_all'   => Text::_('COM_LOCATION_REGION_SHOW_ALL'),
 		];
 	}
 }

@@ -24,6 +24,20 @@
 			   label="COM_LOCATION_REGION_ICON"
 			   filename="icon"
 			   class="span12"/>
+		<field name="default" type="radio"
+			   label="COM_LOCATION_REGION_DEFAULT"
+			   class="btn-group btn-group-yesno"
+			   default="0">
+			<option value="1">JYES</option>
+			<option value="0">JNO</option>
+		</field>
+		<field name="show_all" type="radio"
+			   label="COM_LOCATION_REGION_SHOW_ALL"
+			   class="btn-group btn-group-yesno"
+			   default="0">
+			<option value="1">JYES</option>
+			<option value="0">JNO</option>
+		</field>
 		<field name="state" type="list"
 			   label="JSTATUS"
 			   description="JFIELD_PUBLISHED_DESC"
