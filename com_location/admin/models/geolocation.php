@@ -48,6 +48,8 @@ class LocationModelGeolocation extends AdminModel
 	 */
 	public function getTable($type = 'Geolocations', $prefix = 'LocationTable', $config = array())
 	{
+		Table::addIncludePath(JPATH_ADMINISTRATOR . '/components/com_location/tables');
+
 		return Table::getInstance($type, $prefix, $config);
 	}
 
@@ -89,7 +91,7 @@ class LocationModelGeolocation extends AdminModel
 			// The controller has already verified this is an item you can edit.
 			$form->setFieldAttribute('state', 'filter', 'unset');
 		}
-		
+
 
 		return $form;
 	}
@@ -127,6 +129,16 @@ class LocationModelGeolocation extends AdminModel
 		$pk    = (!empty($data['id'])) ? $data['id'] : (int) $this->getState($this->getName() . '.id');
 		$table = $this->getTable();
 
+		if (empty($data['created']))
+		{
+			$data['created'] = Factory::getDate()->toSql();
+		}
+
+		if (empty($data['region_id']))
+		{
+			$data['region_id'] = -1;
+		}
+
 		// Load the row if saving an existing type.
 		if ($pk > 0)
 		{
@@ -136,7 +148,7 @@ class LocationModelGeolocation extends AdminModel
 		if (parent::save($data))
 		{
 			$id = $this->getState($this->getName() . '.id');
-			
+
 			return $id;
 		}
 

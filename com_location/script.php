@@ -29,8 +29,31 @@ class com_locationInstallerScript
 		$this->tagsIntegration();
 		$this->createImageFolders();
 		$this->createRootRegion();
+		$this->moveLayouts($path);
 
 		return true;
+	}
+
+	/**
+	 * Move layouts folder
+	 *
+	 * @param string $path path to files
+	 *
+	 * @since 1.0.0
+	 */
+	protected function moveLayouts($path)
+	{
+		$component = JPATH_ADMINISTRATOR . $path . '/layouts';
+		$layouts   = JPATH_ROOT . '/layouts' . $path;
+		if (!JFolder::exists(JPATH_ROOT . '/layouts/components'))
+		{
+			JFolder::create(JPATH_ROOT . '/layouts/components');
+		}
+		if (JFolder::exists($layouts))
+		{
+			JFolder::delete($layouts);
+		}
+		JFolder::move($component, $layouts);
 	}
 
 	/**
@@ -189,6 +212,9 @@ class com_locationInstallerScript
 
 		// Remove images
 		JFolder::delete(JPATH_ROOT . '/images/location');
+
+		// Remove layouts
+		JFolder::delete(JPATH_ROOT . '/layouts/components/com_location');
 	}
 
 

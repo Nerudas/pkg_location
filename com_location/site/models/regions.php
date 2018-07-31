@@ -15,6 +15,9 @@ use Joomla\CMS\Helper\TagsHelper;
 use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Plugin\PluginHelper;
+use Joomla\Registry\Registry;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
 class LocationModelRegions extends ListModel
 {
@@ -456,7 +459,167 @@ class LocationModelRegions extends ListModel
 	{
 		if (!is_object($this->_geolocationRegion))
 		{
-			$this->_geolocationRegion = $this->getDefaultRegion();
+			try
+			{
+				// Get geo data
+				$geodata = new Registry(array(
+					'country'   => '-',
+					'district'  => '-',
+					'region'    => '-',
+					'city'      => '-',
+					'latitude'  => 0,
+					'longitude' => 0,
+				));
+
+				PluginHelper::importPlugin('geolocations');
+				$plugins  = PluginHelper::getPlugin('geolocations');
+				$language = Factory::getLanguage();
+				foreach ($plugins as $plugin)
+				{
+					$language->load('plg_' . $plugin->type . '_' . $plugin->name, JPATH_ADMINISTRATOR, $language->getTag(), true);
+					$className = 'plg' . $plugin->type . $plugin->name;
+					if (class_exists($className))
+					{
+						$class = new $className($this, (array) $plugin);
+
+						if ($pluginGeoData = $class->getGeoData())
+						{
+
+							if ($geodata->get('country', '-') == '-')
+							{
+								$geodata->set('country', $pluginGeoData->get('country', '-'));
+							}
+
+							if ($geodata->get('district', '-') == '-')
+							{
+								$geodata->set('district', $pluginGeoData->get('district', '-'));
+							}
+
+							if ($geodata->get('region', '-') == '-')
+							{
+								$geodata->set('region', $pluginGeoData->get('region', '-'));
+							}
+
+							if ($geodata->get('city', '-') == '-')
+							{
+								$geodata->set('city', $pluginGeoData->get('city', '-'));
+							}
+
+							if ($geodata->get('latitude', 0) == 0)
+							{
+								$geodata->set('latitude', $pluginGeoData->get('latitude', 0));
+							}
+
+							if ($geodata->get('longitude', 0) == 0)
+							{
+								$geodata->set('longitude', $pluginGeoData->get('longitude', 0));
+							}
+						}
+
+						if ($geodata->get('city', '-') != '-')
+						{
+							break;
+						}
+					}
+				}
+
+				// Check geolocation database
+				$db    = Factory::getDbo();
+				$query = $db->getQuery(true)
+					->select(array(
+						'r.id as region_id',
+						'r.state as region_state',
+						'r.access as region_access',
+						'g.state as geo_state',
+						'g.id as geo_id'))
+					->from($db->quoteName('#__location_geolocations', 'g'))
+					->join('LEFT', '#__location_regions AS r ON r.id = g.region_id');
+				foreach ($geodata->toArray() as $column => $value)
+				{
+					if ($column != 'latitude' && $column != 'longitude')
+					{
+						$query->where($db->quoteName($column) . ' = ' . $db->quote($value));
+					}
+				}
+
+				$db->setQuery($query);
+				if (!$geoRegion = $db->loadObject())
+				{
+					$model = BaseDatabaseModel::getInstance('GeolocationForm', 'LocationModel', array('ignore_request' => true));
+					if (!$form = $model->getForm())
+					{
+						$this->setError($model->getError());
+
+						$this->_geolocationRegion = $this->getDefaultRegion();
+
+						return $this->_geolocationRegion;
+					}
+
+					$data = $model->validate($form, $geodata->toArray());
+
+					// Check for validation errors.
+					if ($data === false)
+					{
+						foreach ($model->getErrors() as $error)
+						{
+							$this->setError($error);
+
+							$this->_geolocationRegion = $this->getDefaultRegion();
+
+							return $this->_geolocationRegion;
+						}
+					}
+					$model->save($data);
+
+					$this->_geolocationRegion = $this->getDefaultRegion();
+
+					return $this->_geolocationRegion;
+				}
+
+				// Check exist geolocation
+				if ($geoRegion->region_id == -1)
+				{
+					$this->_geolocationRegion = $this->getDefaultRegion();
+
+					return $this->_geolocationRegion;
+				}
+
+				// Filter by access level
+				$user = Factory::getUser();
+				if (!$user->authorise('core.admin') && !in_array($geoRegion->region_access, $user->getAuthorisedViewLevels()))
+				{
+					$this->_geolocationRegion = $this->getDefaultRegion();
+
+					return $this->_geolocationRegion;
+
+				}
+
+				// Filter by published state.
+				$published = $this->getState('filter.published');
+				if (!empty($published))
+				{
+					if (is_numeric($published) && ($geoRegion->region_state != $published || $geoRegion->geo_state != $published))
+					{
+						$this->_geolocationRegion = $this->getDefaultRegion();
+
+						return $this->_geolocationRegion;
+					}
+					elseif (is_array($published) &&
+						(!in_array($geoRegion->region_stat, $published) || !in_array($geoRegion->geo_state, $published)))
+					{
+						$this->_geolocationRegion = $this->getDefaultRegion();
+
+						return $this->_geolocationRegion;
+					}
+				}
+
+				$this->_geolocationRegion = $this->getRegion($geoRegion->region_id);
+			}
+			catch (Exception $e)
+			{
+				$this->setError($e);
+				$this->_geolocationRegion = $this->getDefaultRegion();
+			}
 		}
 
 		return $this->_geolocationRegion;
@@ -490,5 +653,20 @@ class LocationModelRegions extends ListModel
 		}
 
 		return $this->_defaultRegion;
+	}
+
+
+	/**
+	 * Attach an observer object
+	 *
+	 * @param   object $observer An observer object to attach
+	 *
+	 * @return  void
+	 *
+	 * @since   1.0.0
+	 */
+	public function attach($observer)
+	{
+
 	}
 }

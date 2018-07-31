@@ -1,6 +1,9 @@
 <?xml version="1.0"?>
 <config>
 	<fieldset name="global" label="JGLOBAL_FIELDSET_OPTIONS">
+		<field name="admin_email" type="text"
+			   class="input-xxlarge"
+			   label="COM_LOCATION_PARAMS_ADMIN_EMAIL"/>
 	</fieldset>
 	<fieldset name="permissions"
 			  label="JCONFIG_PERMISSIONS_LABEL"

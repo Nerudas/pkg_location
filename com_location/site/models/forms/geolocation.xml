@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+	<fieldset>
+		<field name="region_id" type="hidden" default="-1"/>
+		<field name="state" type="hidden" default="0"/>
+		<field name="id" type="hidden" default="0" readonly="true"/>
+		<field name="country" type="hidden" default="-"/>
+		<field name="district" type="hidden" default="-"/>
+		<field name="region" type="hidden" default="-"/>
+		<field name="city" type="hidden" default="-"/>
+		<field name="latitude" type="hidden" default="0"/>
+		<field name="longitude" type="hidden" default="0"/>
+	</fieldset>
+</form>
