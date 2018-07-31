@@ -187,7 +187,7 @@ class LocationModelRegions extends ListModel
 		{
 			if (is_numeric($published))
 			{
-				$query->where('( r.state = ' . (int) $published);
+				$query->where('r.state = ' . (int) $published);
 			}
 			elseif (is_array($published))
 			{
@@ -281,7 +281,8 @@ class LocationModelRegions extends ListModel
 			$app  = Factory::getApplication();
 			$user = Factory::getUser();
 			$id   = $app->input->cookie->get('region', -1);
-			if (empty($id) || $id == -1 || $id == 'undefined')
+			if (empty($id) || $id == -1 || $id == 'undefined' ||
+				(!$app->input->cookie->get($check_name, false) && !$this->getRegion($id)))
 			{
 				if (!$user->guest)
 				{
@@ -338,7 +339,7 @@ class LocationModelRegions extends ListModel
 				{
 					if (is_numeric($published))
 					{
-						$query->where('( r.state = ' . (int) $published);
+						$query->where('r.state = ' . (int) $published);
 					}
 					elseif (is_array($published))
 					{
@@ -404,7 +405,7 @@ class LocationModelRegions extends ListModel
 				{
 					if (is_numeric($published))
 					{
-						$query->where('( r.state = ' . (int) $published);
+						$query->where('r.state = ' . (int) $published);
 					}
 					elseif (is_array($published))
 					{
@@ -418,6 +419,8 @@ class LocationModelRegions extends ListModel
 				if (empty($data))
 				{
 					$this->_regions[$pk] = false;
+
+					return $this->_regions[$pk];
 				}
 
 				// Get Tags

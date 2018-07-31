@@ -29,20 +29,29 @@ class plgSystemLocation_Geolocation extends CMSPlugin
 		$app = Factory::getApplication();
 		if ($app->isSite())
 		{
+			BaseDatabaseModel::addIncludePath(JPATH_SITE . '/components/com_location/models', 'LocationModel');
+			$model = BaseDatabaseModel::getInstance('Regions', 'LocationModel', array('ignore_request' => false));
+
 			$name   = 'region';
 			$value  = $app->input->cookie->get($name, -1);
 			$expire = Factory::getDate('now +1 year')->toUnix();
 			$path   = rtrim(Uri::root(true), '/') . '/';
 
-			if (empty($value) || $value == -1 || $value == 'undefined')
-			{
-				BaseDatabaseModel::addIncludePath(JPATH_SITE . '/components/com_location/models', 'LocationModel');
-				$model = BaseDatabaseModel::getInstance('Regions', 'LocationModel', array('ignore_request' => true));
-				$value = $model->getVisitorRegion()->id;
+			$check_name   = 'region_check';
+			$check_value  = $app->input->cookie->get($check_name, false);
+			$check_expire = Factory::getDate('now +' . Factory::getConfig()->get('lifetime') . ' minute')->toUnix();
 
-				$app->input->cookie->set('new_region', $value, Factory::getDate('now +10 second')->toUnix(), $path);
+			// Set new region
+			if (empty($value) || $value == -1 || $value == 'undefined' || (!$check_value && !$model->getRegion($value)))
+			{
+				$value       = $model->getVisitorRegion()->id;
+				$check_value = true;
+
+				$app->input->cookie->set($check_name, $check_value, $check_expire, $path);
+				$app->input->cookie->set('region_new', true, Factory::getDate('now +10 second')->toUnix(), $path);
 			}
 
+			// Set region cookie
 			$app->input->cookie->set($name, $value, $expire, $path);
 		}
 	}
