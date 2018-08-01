@@ -281,25 +281,43 @@ class LocationModelRegions extends ListModel
 	{
 		if (!is_object($this->_visitorRegion))
 		{
-			$app  = Factory::getApplication();
-			$user = Factory::getUser();
-			$id   = $app->input->cookie->get('region', -1);
-			if (empty($id) || $id == -1 || $id == 'undefined' ||
-				(!$app->input->cookie->get($check_name, false) && !$this->getRegion($id)))
+			$app    = Factory::getApplication();
+			$user   = Factory::getUser();
+			$name   = 'region';
+			$value  = $app->input->cookie->get($name, -1);
+			$expire = Factory::getDate('now +1 year')->toUnix();
+			$path   = rtrim(Uri::root(true), '/') . '/';
+
+			$check_name   = 'region_check';
+			$check_value  = $app->input->cookie->get($check_name, false);
+			$check_expire = Factory::getDate('now +' . Factory::getConfig()->get('lifetime') . ' minute')->toUnix();
+
+			// Set new region
+			if (empty($value) || $value == -1 || $value == 'undefined' || (!$check_value && !$model->getRegion($value)))
 			{
+
 				if (!$user->guest)
 				{
 					$this->_visitorRegion = $this->getProfileRegion($user->id);
-
-					return $this->_visitorRegion;
+				}
+				else
+				{
+					$this->_visitorRegion = $this->getGeoLocationRegion();
 				}
 
-				$this->_visitorRegion = $this->getGeoLocationRegion();
-
-				return $this->_visitorRegion;
+				$value = $this->_visitorRegion->id;
+				$app->input->cookie->set('region_new', true, Factory::getDate('now +10 second')->toUnix(), $path);
+			}
+			else
+			{
+				$this->_visitorRegion = $this->getRegion($value);
 			}
 
-			$this->_visitorRegion = $this->getRegion($id);
+			// Set region cookie
+			$check_value = true;
+			$app->input->cookie->set($check_name, $check_value, $check_expire, $path);
+			$app->input->cookie->set($name, $value, $expire, $path);
+
 		}
 
 		return $this->_visitorRegion;

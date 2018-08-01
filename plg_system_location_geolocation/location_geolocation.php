@@ -44,14 +44,13 @@ class plgSystemLocation_Geolocation extends CMSPlugin
 			// Set new region
 			if (empty($value) || $value == -1 || $value == 'undefined' || (!$check_value && !$model->getRegion($value)))
 			{
-				$value       = $model->getVisitorRegion()->id;
-				$check_value = true;
-
-				$app->input->cookie->set($check_name, $check_value, $check_expire, $path);
+				$value = $model->getVisitorRegion()->id;
 				$app->input->cookie->set('region_new', true, Factory::getDate('now +10 second')->toUnix(), $path);
 			}
 
 			// Set region cookie
+			$check_value = true;
+			$app->input->cookie->set($check_name, $check_value, $check_expire, $path);
 			$app->input->cookie->set($name, $value, $expire, $path);
 		}
 	}
