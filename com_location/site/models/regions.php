@@ -18,6 +18,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\Registry\Registry;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Language\Text;
 
 class LocationModelRegions extends ListModel
 {
@@ -155,7 +156,7 @@ class LocationModelRegions extends ListModel
 	protected function getStoreId($id = '')
 	{
 		$id .= ':' . $this->getState('filter.access');
-		$id .= ':' . $this->getState('filter.published');
+		$id .= ':' . serialize($this->getState('filter.published'));
 		$id .= ':' . serialize($this->getState('filter.item_id'));
 		$id .= ':' . $this->getState('filter.item_id.include');
 
@@ -178,6 +179,7 @@ class LocationModelRegions extends ListModel
 			->where($db->quoteName('r.alias') . ' <> ' . $db->quote('root'));
 
 		// Filter by access level
+		$user = Factory::getUser();
 		if (!$user->authorise('core.admin'))
 		{
 			$groups = implode(',', $user->getAuthorisedViewLevels());
@@ -442,6 +444,11 @@ class LocationModelRegions extends ListModel
 					$this->_regions[$pk] = false;
 
 					return $this->_regions[$pk];
+				}
+
+				if ($data->id == -1)
+				{
+					$data->name = Text::_('COM_LOCATION_REGION_UNDEFINED');
 				}
 
 				// Get Tags

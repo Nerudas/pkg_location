@@ -10,3 +10,13 @@
 
 defined('_JEXEC') or die;
 
+?>
+<div>
+	<?php foreach ($items as $item): ?>
+		<div>
+			<a data-location-set-region="<?php echo $item->id; ?>">
+				<?php echo ($item->level > 1) ? str_repeat('- ', ($item->level - 1)) . $item->name : $item->name; ?>
+			</a>
+		</div>
+	<?php endforeach; ?>
+</div>
