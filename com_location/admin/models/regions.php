@@ -228,7 +228,7 @@ class LocationModelRegions extends ListModel
 
 				// Icons
 				$icon       = (!empty($item->icon) && JFile::exists(JPATH_ROOT . '/' . $item->icon)) ?
-					$item->icon : 'media/com_location/images/no-icon.jpg';
+					$item->icon : 'media/com_location/images/no-icon.png';
 				$item->icon = Uri::root(true) . '/' . $icon;
 			}
 		}

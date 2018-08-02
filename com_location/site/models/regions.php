@@ -262,7 +262,7 @@ class LocationModelRegions extends ListModel
 
 				// Icons
 				$icon       = (!empty($item->icon) && JFile::exists(JPATH_ROOT . '/' . $item->icon)) ?
-					$item->icon : 'media/com_location/images/no-icon.jpg';
+					$item->icon : 'media/com_location/images/no-icon.png';
 				$item->icon = Uri::root(true) . '/' . $icon;
 
 				$this->_regions[$item->id] = $item;
@@ -457,7 +457,7 @@ class LocationModelRegions extends ListModel
 
 				// Icons
 				$icon       = (!empty($data->icon) && JFile::exists(JPATH_ROOT . '/' . $data->icon)) ?
-					$data->icon : 'media/com_location/images/no-icon.jpg';
+					$data->icon : 'media/com_location/images/no-icon.png';
 				$data->icon = Uri::root(true) . '/' . $icon;
 
 				$this->_regions[$pk] = $data;
