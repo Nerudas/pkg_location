@@ -18,6 +18,7 @@
 		<folder type="component" id="com_location">com_location</folder>
 		<folder type="plugin" id="location_geolocation" group="system">plg_system_location_geolocation</folder>
 		<folder type="plugin" id="ipgeobase" group="geolocations">plg_geolocations_ipgeobase</folder>
+		<folder type="plugin" id="location" group="fieldtypes">plg_fieldtypes_location</folder>
 		<folder type="module" id="mod_location_regions" client="site">mod_location_regions</folder>
 	</files>
 	<updateservers>

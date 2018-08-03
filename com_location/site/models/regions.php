@@ -114,7 +114,7 @@ class LocationModelRegions extends ListModel
 		$user = Factory::getUser();
 
 		// Published state
-		if ((!$user->authorise('core.manage', 'com_companies')))
+		if ((!$user->authorise('core.manage', 'com_location')))
 		{
 			// Limit to published for people who can't edit or edit.state.
 			$this->setState('filter.published', 1);

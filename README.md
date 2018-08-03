@@ -20,5 +20,8 @@ Plugin for determining the visitor's region
 * **Geolocations - IPGeoBase Plugin**  
 Plugin for obtaining geodata from ipgeobase.ru site
 
+* **Field Types - Location Plugin**  
+Fields from locations component
+
 * **Location - Regions Module**  
 Module for displaying and selecting regions
