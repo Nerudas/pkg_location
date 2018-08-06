@@ -149,7 +149,7 @@ class com_locationInstallerScript
 		$region->field_mappings                               = new stdClass();
 		$region->field_mappings->common                       = new stdClass();
 		$region->field_mappings->common->core_content_item_id = 'id';
-		$region->field_mappings->common->core_title           = 'title';
+		$region->field_mappings->common->core_title           = 'name';
 		$region->field_mappings->common->core_state           = 'state';
 		$region->field_mappings->common->core_alias           = 'id';
 		$region->field_mappings->common->core_created_time    = 'null';
@@ -177,8 +177,8 @@ class com_locationInstallerScript
 		$region->router                                       = 'null';
 		$region->content_history_options                      = '';
 
-		(!empty($current_id)) ? $db->updateObject('#__content_types', $item, array('type_id'))
-			: $db->insertObject('#__content_types', $item);
+		(!empty($current_id)) ? $db->updateObject('#__content_types', $region, array('type_id'))
+			: $db->insertObject('#__content_types', $region);
 	}
 
 	/**
