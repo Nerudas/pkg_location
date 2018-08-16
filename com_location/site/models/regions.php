@@ -295,7 +295,7 @@ class LocationModelRegions extends ListModel
 			$check_expire = Factory::getDate('now +' . Factory::getConfig()->get('lifetime') . ' minute')->toUnix();
 
 			// Set new region
-			if (empty($value) || $value == -1 || $value == 'undefined' || (!$check_value && !$model->getRegion($value)))
+			if (empty($value) || $value == -1 || $value == 'undefined' || (!$check_value && !$this->getRegion($value)))
 			{
 
 				if (!$user->guest)
