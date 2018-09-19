@@ -20,6 +20,8 @@ use Joomla\Registry\Registry;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Language\Text;
 
+jimport('joomla.filesystem.file');
+
 class LocationModelRegions extends ListModel
 {
 	/**
