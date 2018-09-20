@@ -20,7 +20,7 @@ use Joomla\Registry\Registry;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Language\Text;
 
-jimport('joomla.filesystem.file');
+JLoader::register('FieldTypesFilesHelper', JPATH_PLUGINS . '/fieldtypes/files/helper.php');
 
 class LocationModelRegions extends ListModel
 {
@@ -256,16 +256,17 @@ class LocationModelRegions extends ListModel
 		$items = parent::getItems();
 		if (!empty($items))
 		{
+
+			$imagesHelper = new FieldTypesFilesHelper();
+
 			foreach ($items as &$item)
 			{
 				// Get Tags
 				$item->tags = new TagsHelper;
 				$item->tags->getItemTags('com_location.region', $item->id);
 
-				// Icons
-				$icon       = (!empty($item->icon) && JFile::exists(JPATH_ROOT . '/' . $item->icon)) ?
-					$item->icon : 'media/com_location/images/no-icon.png';
-				$item->icon = Uri::root(true) . '/' . $icon;
+				$imageFolder = 'images/location/regions/' . $item->id;
+				$item->icon  = $imagesHelper->getImage('icon', $imageFolder, false, false);
 
 				$this->_regions[$item->id] = $item;
 			}
@@ -458,9 +459,9 @@ class LocationModelRegions extends ListModel
 				$data->tags->getItemTags('com_location.region', $data->id);
 
 				// Icons
-				$icon       = (!empty($data->icon) && JFile::exists(JPATH_ROOT . '/' . $data->icon)) ?
-					$data->icon : 'media/com_location/images/no-icon.png';
-				$data->icon = Uri::root(true) . '/' . $icon;
+				$imagesHelper = new FieldTypesFilesHelper();
+				$imageFolder  = 'images/location/regions/' . $data->id;
+				$data->icon   = $imagesHelper->getImage('icon', $imageFolder, false, false);
 
 				$this->_regions[$pk] = $data;
 

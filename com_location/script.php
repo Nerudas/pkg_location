@@ -163,7 +163,7 @@ class com_locationInstallerScript
 		$region->field_mappings->common->core_featured        = 'null';
 		$region->field_mappings->common->core_metadata        = 'null';
 		$region->field_mappings->common->core_language        = 'null';
-		$region->field_mappings->common->core_images          = 'icon';
+		$region->field_mappings->common->core_images          = 'null';
 		$region->field_mappings->common->core_urls            = 'null';
 		$region->field_mappings->common->core_version         = 'null';
 		$region->field_mappings->common->core_ordering        = 'ordering';

@@ -13,7 +13,6 @@ defined('_JEXEC') or die;
 use Joomla\CMS\MVC\Model\ListModel;
 use Joomla\CMS\Helper\TagsHelper;
 use Joomla\Utilities\ArrayHelper;
-use Joomla\CMS\Uri\Uri;
 
 class LocationModelRegions extends ListModel
 {
@@ -226,10 +225,6 @@ class LocationModelRegions extends ListModel
 				$item->tags = new TagsHelper;
 				$item->tags->getItemTags('com_location.region', $item->id);
 
-				// Icons
-				$icon       = (!empty($item->icon) && JFile::exists(JPATH_ROOT . '/' . $item->icon)) ?
-					$item->icon : 'media/com_location/images/no-icon.png';
-				$item->icon = Uri::root(true) . '/' . $icon;
 			}
 		}
 
