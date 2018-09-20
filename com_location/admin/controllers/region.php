@@ -11,7 +11,6 @@
 defined('_JEXEC') or die;
 
 use Joomla\CMS\MVC\Controller\FormController;
-use Joomla\CMS\Factory;
 
 class LocationControllerRegion extends FormController
 {
@@ -22,29 +21,4 @@ class LocationControllerRegion extends FormController
 	 * @since  1.0.0
 	 */
 	protected $text_prefix = 'COM_LOCATION_REGION';
-
-	/**
-	 * Method to update item icon
-	 *
-	 * @return  boolean  True if successful, false otherwise.
-	 *
-	 * @since  1.0.0
-	 */
-	public function updateImages()
-	{
-		$app   = Factory::getApplication();
-		$id    = $app->input->get('id', 0, 'int');
-		$value = $app->input->get('value', '', 'raw');
-		$field = $app->input->get('field', '', 'raw');
-		if (!empty($id) & !empty($field))
-		{
-			JLoader::register('imageFolderHelper', JPATH_PLUGINS . '/fieldtypes/ajaximage/helpers/imagefolder.php');
-			$helper = new imageFolderHelper('images/location/regions');
-			$helper->saveImagesValue($id, '#__location_regions', $field, $value);
-		}
-
-		$app->close();
-
-		return true;
-	}
 }

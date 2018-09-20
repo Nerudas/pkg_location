@@ -18,33 +18,18 @@ use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\CMS\Helper\TagsHelper;
 use Joomla\CMS\Table\Table;
 
+JLoader::register('FieldTypesFilesHelper', JPATH_PLUGINS . '/fieldtypes/files/helper.php');
+
 class LocationModelRegion extends AdminModel
 {
 	/**
-	 * Imagefolder helper helper
+	 * Images root path
 	 *
-	 * @var    new imageFolderHelper
+	 * @var    string
 	 *
-	 * @since  1.0.0
+	 * @since  1.2.0
 	 */
-	protected $imageFolderHelper = null;
-
-	/**
-	 * Constructor.
-	 *
-	 * @param   array $config An optional associative array of configuration settings.
-	 *
-	 * @see     AdminModel
-	 *
-	 * @since   1.0.0
-	 */
-	public function __construct($config = array())
-	{
-		JLoader::register('imageFolderHelper', JPATH_PLUGINS . '/fieldtypes/ajaximage/helpers/imagefolder.php');
-		$this->imageFolderHelper = new imageFolderHelper('images/location/regions');
-
-		parent::__construct($config);
-	}
+	protected $images_root = 'images/location/regions';
 
 	/**
 	 * Method to get a single record.
@@ -122,9 +107,8 @@ class LocationModelRegion extends AdminModel
 			$form->setFieldAttribute('state', 'filter', 'unset');
 		}
 
-		// Set update icon link
-		$iamgesSaveUrl = 'index.php?option=com_location&task=region.updateImages&id=' . $id;
-		$form->setFieldAttribute('icon', 'saveurl', $iamgesSaveUrl . '&field=icon');
+		// Set images folder root
+		$form->setFieldAttribute('images_folder', 'root', $this->images_root);
 
 		return $form;
 	}
@@ -301,17 +285,10 @@ class LocationModelRegion extends AdminModel
 		}
 
 		// Save images
-		$data['imagefolder'] = (!empty($data['imagefolder'])) ? $data['imagefolder'] :
-			$this->imageFolderHelper->getItemImageFolder($id);
-
-		if ($isNew)
+		if ($isNew && !empty($data['images_folder']))
 		{
-			$data['icon'] = (isset($data['icon'])) ? $data['icon'] : '';
-		}
-
-		if (isset($data['icon']))
-		{
-			$this->imageFolderHelper->saveItemImages($id, $data['imagefolder'], '#__location_regions', 'icon', $data['icon']);
+			$filesHelper = new FieldTypesFilesHelper();
+			$filesHelper->moveTemporaryFolder($data['images_folder'], $id, $this->images_root);
 		}
 
 		return true;
@@ -399,9 +376,10 @@ class LocationModelRegion extends AdminModel
 		if (parent::delete($pks))
 		{
 			// Delete images
+			$filesHelper = new FieldTypesFilesHelper();
 			foreach ($pks as $pk)
 			{
-				$this->imageFolderHelper->deleteItemImageFolder($pk);
+				$filesHelper->deleteItemFolder($pk, $this->images_root);
 			}
 
 			return true;

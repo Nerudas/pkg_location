@@ -20,8 +20,9 @@
 		</field>
 	</fieldset>
 	<fieldset name="global">
-		<field name="icon" type="ajaximage"
+		<field name="icon" type="image"
 			   label="COM_LOCATION_REGION_ICON"
+			   folder_field="images_folder"
 			   filename="icon"
 			   class="span12"/>
 		<field name="default" type="radio"
@@ -77,7 +78,8 @@
 			   class="readonly span12"
 			   default="0"
 			   readonly="true"/>
-		<field name="imagefolder" type="imagefolder" path="images/location/regions" class="span12"/>
+		<field name="images_folder" type="folder"
+			   label="JGLOBAL_FIELD_IMAGES_FOLDER_LABEL"/>
 		<field name="lft" type="hidden" filter="unset"/>
 		<field name="rgt" type="hidden" filter="unset"/>
 	</fieldset>
