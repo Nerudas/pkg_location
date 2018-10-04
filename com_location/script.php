@@ -252,25 +252,4 @@ class com_locationInstallerScript
 			}
 		}
 	}
-
-	/**
-	 * Remove categories
-	 *
-	 * @param  \stdClass $parent - Parent object calling object.
-	 *
-	 * @return void
-	 *
-	 * @since  1.2.0
-	 */
-	public function update($parent)
-	{
-		$db = Factory::getDbo();
-		$table   = '#__location_regions';
-		$columns = $db->getTableColumns($table);
-		// Remove icon
-		if (isset($columns['icon']))
-		{
-			$db->setQuery("ALTER TABLE " . $table . " DROP icon")->query();
-		}
-	}
 }
