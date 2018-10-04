@@ -8,7 +8,6 @@ CREATE TABLE IF NOT EXISTS `#__location_regions` (
 	`path`         VARCHAR(400) NOT NULL DEFAULT '',
 	`alias`        VARCHAR(400) NOT NULL DEFAULT '',
 	`abbreviation` VARCHAR(255) NOT NULL DEFAULT '',
-	`icon`         TEXT         NOT NULL DEFAULT '',
 	`default`      TINYINT(3)   NOT NULL DEFAULT '0',
 	`show_all`     TINYINT(3)   NOT NULL DEFAULT '0',
 	`state`        TINYINT(3)   NOT NULL DEFAULT '0',
